@@ -1,0 +1,29 @@
+{
+  "name": "project-discount",
+  "homepage": "https://github.com/kaybriyel/project-discount",
+  "authors": [
+    "WCT_Student_Group"
+  ],
+  "description": "Recommendation of shops with special offer price",
+  "main": "public/index.html",
+  "keywords": [
+	"project-discount"
+    "material",
+    "design",
+    "material-ui",
+    "material",
+    "design",
+    "google",
+    "twitter"
+  ],
+  "license": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "build"
+  ],
+  "private": true
+}
