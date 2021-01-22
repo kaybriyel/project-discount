@@ -1,5 +1,27 @@
+// @material-ui/core
+import { makeStyles } from "@material-ui/core/styles";
+import Icon from "@material-ui/core/Icon";
+// core components
+import GridItem from "components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer.js";
+import Danger from "components/Typography/Danger.js";
+import Card from "components/Card/Card.js";
+import CardHeader from "components/Card/CardHeader.js";
+import CardIcon from "components/Card/CardIcon.js";
+
+import CardFooter from "components/Card/CardFooter.js";
+
+// @material-ui/icons
+import Store from "@material-ui/icons/Store";
+import Warning from "@material-ui/icons/Warning";
+import DateRange from "@material-ui/icons/DateRange";
+import LocalOffer from "@material-ui/icons/LocalOffer";
+import Update from "@material-ui/icons/Update";
+
+import Accessibility from "@material-ui/icons/Accessibility";
+
 import React, { useState } from "react";
-import image from "../../assets/img/cover.jpeg"
+
 import {
   withScriptjs,
   withGoogleMap,
@@ -7,6 +29,8 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
+
+import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
 const locations = [
   {
@@ -36,14 +60,15 @@ const locations = [
   }
 ];
 
-
+const useStyles = makeStyles(styles);
 const GoogleMapFun = () => {
   const [selected, setSelected] = useState({});
-
+  const classes = useStyles();
   const onSelect = item => {
     setSelected(item);
   }
   return (
+
     <GoogleMap
       defaultZoom={13}
       defaultCenter={locations[0].location}
@@ -129,22 +154,88 @@ const GoogleMapFun = () => {
           <InfoWindow
             position={selected.location}
             clickable={true}
+
             onCloseClick={() => setSelected({})}
           >
            
-            <div class="makeStyles-card-113">
-              <div class="makeStyles-cardHeader-117 makeStyles-warningCardHeader-121 makeStyles-cardHeaderStats-119 makeStyles-cardHeaderIcon-120">
-                <div class="makeStyles-cardIcon-127 makeStyles-warningCardHeader-128">
-                  <span class="material-icons MuiIcon-root" aria-hidden="true">content_copy</span>
-                </div><p class="makeStyles-cardCategory-107">Used Space</p>
-                <h3 class="makeStyles-cardTitle-109">49/50 <small>GB</small>
-                </h3></div><div class="makeStyles-cardFooter-134 makeStyles-cardFooterStats-137">
-                <div class="makeStyles-stats-106"><div class="makeStyles-defaultFontStyle-139 makeStyles-dangerText-149">
-                  <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path>
-                  </svg></div><a href="#pablo">Get more space</a>
-                </div></div>
-            </div>
+
+            <GridContainer>
+              <GridItem xs={12} sm={6} md={3}>
+                <Card>
+                  <CardHeader color="warning" stats icon>
+                    <CardIcon color="warning">
+                      <Icon>content_copy</Icon>
+                    </CardIcon>
+                    <p className={classes.cardCategory}>Used Space</p>
+                    <h3 className={classes.cardTitle}>
+                      49/50 <small>GB</small>
+                    </h3>
+                  </CardHeader>
+                  <CardFooter stats>
+                    <div className={classes.stats}>
+                      <Danger>
+                        <Warning />
+                      </Danger>
+                      <a href="#pablo" onClick={e => e.preventDefault()}>
+                        Get more space
+                </a>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </GridItem>
+              <GridItem xs={12} sm={6} md={3}>
+                <Card>
+                  <CardHeader color="success" stats icon>
+                    <CardIcon color="success">
+                      <Store />
+                    </CardIcon>
+                    <p className={classes.cardCategory}>Revenue</p>
+                    <h3 className={classes.cardTitle}>$34,245</h3>
+                  </CardHeader>
+                  <CardFooter stats>
+                    <div className={classes.stats}>
+                      <DateRange />
+                Last 24 Hours
+              </div>
+                  </CardFooter>
+                </Card>
+              </GridItem>
+              <GridItem xs={12} sm={6} md={3}>
+                <Card>
+                  <CardHeader color="danger" stats icon>
+                    <CardIcon color="danger">
+                      <Icon>info_outline</Icon>
+                    </CardIcon>
+                    <p className={classes.cardCategory}>Fixed Issues</p>
+                    <h3 className={classes.cardTitle}>75</h3>
+                  </CardHeader>
+                  <CardFooter stats>
+                    <div className={classes.stats}>
+                      <LocalOffer />
+                Tracked from Github
+              </div>
+                  </CardFooter>
+                </Card>
+              </GridItem>
+              <GridItem xs={12} sm={6} md={3}>
+                <Card>
+                  <CardHeader color="info" stats icon>
+                    <CardIcon color="info">
+                      <Accessibility />
+                    </CardIcon>
+                    <p className={classes.cardCategory}>Followers</p>
+                    <h3 className={classes.cardTitle}>+245</h3>
+                  </CardHeader>
+                  <CardFooter stats>
+                    <div className={classes.stats}>
+                      <Update />
+                Just Updated
+              </div>
+                  </CardFooter>
+                </Card>
+              </GridItem>
+            </GridContainer>
+
           </InfoWindow>
         )
       }
