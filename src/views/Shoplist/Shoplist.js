@@ -2,17 +2,12 @@ import React, {useState} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
-import Quote from "components/Typography/Quote.js";
-import Muted from "components/Typography/Muted.js";
 import Primary from "components/Typography/Primary.js";
-import Info from "components/Typography/Info.js";
-import Success from "components/Typography/Success.js";
-import Warning from "components/Typography/Warning.js";
-import Danger from "components/Typography/Danger.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import Button from "components/CustomButtons/Button.js";
+import Cardshopitem from "components/Cardshopitem/Cardshopitem.js";
 
 const styles = {
   typo: {
@@ -60,7 +55,14 @@ export default function Shoplist() {
     const [text, setText] = useState( prop.cat );
 
     return (
-      <Button onClick={() => {setText('Ordered')}} type="button" color="info">{text}</Button>
+      <Button onClick={() => {setText('Ordered');}} type="button" color="info">{text}</Button>
+    );
+  }
+
+  const Carditem = (prop) => {
+    const [classname, setClassName] = useState( prop.className);
+    return (
+      <Cardshopitem className={classname}/>
     );
   }
 
@@ -72,15 +74,13 @@ export default function Shoplist() {
             <Card key={s}>
               <CardHeader color="info">
                 <h4 className={classes.cardTitleWhite}>{s}</h4>
-                <BTN cat="HOT COFFEE"/>
+                <BTN cat="HOT DRINK"/>
+                <BTN cat="SOFT DRINK"/>
+                <BTN cat="FRAPPE"/>
+                <BTN cat="ICE & CREAM"/>
               </CardHeader>
               <CardBody>
-                <div className={classes.typo}>
-                  <div className={classes.note}></div>
-                  <Primary>
-                    Some products in {s}
-                  </Primary>
-                </div>
+                <Carditem />
               </CardBody>
             </Card>
           );
@@ -89,27 +89,3 @@ export default function Shoplist() {
     </div>
   );
 }
-
-
-/*
-<Card>
-      <CardHeader color="primary">
-        <h4 className={classes.cardTitleWhite}>JC BAKERY</h4>
-      </CardHeader>
-      <CardBody>
-        <div className={classes.typo}>
-          <div className={classes.note}>Some Categories</div>
-          <Primary>
-
-          </Primary>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}></div>
-          <Primary>
-            Some products
-          </Primary>
-        </div>
-      </CardBody>
-    </Card>
-
-*/
