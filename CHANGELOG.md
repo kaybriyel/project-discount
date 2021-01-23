@@ -126,7 +126,6 @@ ajv                        6.9.1   →   6.10.0
 - **src/components/Header/RTLHeaderLinks.jsx**
 - **src/layouts/Admin.jsx** (instead of Dashboard)
 - **src/layouts/RTL.jsx**
-- **src/views/RTLPage/RTLPage.jsx**
 ### Deleted components
 - **src/layouts/Dashboard/Dashboard.jsx** (renamed to Admin)
 - **src/routes/dashboard.jsx**
