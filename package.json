@@ -3,6 +3,7 @@
   "version": "1.9.0",
   "description": "Recommend all available shops that have special discount",
   "private": false,
+  "homepage": "./",
   "main": "dist/index.js",
   "dependencies": {
     "@material-ui/core": "4.10.0",

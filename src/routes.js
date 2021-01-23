@@ -39,67 +39,67 @@ import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
 
 const dashboardRoutes = [
   {
-    path: "/dashboard",
+    path: "dashboard",
     name: "Dashboard",
     rtlName: "لوحة القيادة",
     icon: Dashboard,
     component: DashboardPage,
-    layout: "/admin"
+    layout: "/"
   },
   {
-    path: "/shoplist",
+    path: "shoplist",
     name: "Shoplist",
     icon: Dashboard,
     component: Shoplist,
-    layout: "/admin"
+    layout: "/"
   },
   {
-    path: "/user",
+    path: "user",
     name: "User Profile",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component: UserProfile,
-    layout: "/admin"
+    layout: "/"
   },
   {
-    path: "/table",
+    path: "table",
     name: "Table List",
     rtlName: "قائمة الجدول",
     icon: "content_paste",
     component: TableList,
-    layout: "/admin"
+    layout: "/"
   },
   {
-    path: "/typography",
+    path: "typography",
     name: "Typography",
     rtlName: "طباعة",
     icon: LibraryBooks,
     component: Typography,
-    layout: "/admin"
+    layout: "/"
   },
   {
-    path: "/icons",
+    path: "icons",
     name: "Icons",
     rtlName: "الرموز",
     icon: BubbleChart,
     component: Icons,
-    layout: "/admin"
+    layout: "/"
   },
   {
-    path: "/maps",
+    path: "maps",
     name: "Maps",
     rtlName: "خرائط",
     icon: LocationOn,
     component: Maps,
-    layout: "/admin"
+    layout: "/"
   },
   {
-    path: "/notifications",
+    path: "notifications",
     name: "Notifications",
     rtlName: "إخطارات",
     icon: Notifications,
     component: NotificationsPage,
-    layout: "/admin"
+    layout: "/"
   },
 
 ];
