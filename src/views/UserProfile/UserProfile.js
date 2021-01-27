@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -11,7 +11,7 @@ import CardBody from "components/Card/CardBody.js";
 
 import Signin from './SigninForm/Signin';
 import Signup from './SignupForm/Signup';
-
+import UpdateProfile from './UpdateProfileForm/UpadateForm';
 import avatar from "assets/img/faces/marc.jpg";
 
 const styles = {
@@ -36,11 +36,26 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function UserProfile() {
+  const [profile, setProfile] = useState({});
+  const [signedUp, setSignedUp] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+  const setter = { setProfile, setSignedUp, setSignedIn };
+  useEffect(() => {
+    if (profile.id) {
+      fetch(`https://jsondbapp.herokuapp.com/login/${profile.id}`)
+        .then(res => res.json())
+        .then(session => {
+          alert('SessionID: ' + session);
+          setSignedIn(true);
+        });
+    }
+  }, [profile, signedIn]);
+
   return (
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
-          <Signup />
+          {signedUp ? <Signin {...profile} {...setter}/> : <Signup {...profile} {...setter} />}
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Userprofile />

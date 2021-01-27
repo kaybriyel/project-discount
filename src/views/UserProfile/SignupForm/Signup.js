@@ -1,7 +1,6 @@
 import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -9,12 +8,10 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import avatar from "assets/img/faces/marc.jpg";
-
+import base64encoding from "variables/base64encoder.js";
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -36,22 +33,52 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function Signup() {
+export default function Signup(props) {
+  console.log('props', props);
   const classes = useStyles();
+  const { setProfile, setSignedUp } = props;
   const submit = (e) => {
     e.preventDefault();
+    const form = formData(e.target); //parse data from form
+    const url = 'http://jsondbapp.herokuapp.com/users';
+    const option = {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(form.data)
+    };
+
     const signUp = (user) => {
-      alert('Welcome ' + user.username);
+      alert("Signed up successfully");
+      localStorage.auth = user.id;
+      setProfile(user);
+      setSignedUp(true);
     }
-    fetch('http://localhost:3001/users/alec').then(res => res.json()).then(user => signUp(user));
+    if (form.valid) fetch(url, option)
+    .then(res => {
+      if(res.status == 201) res.json()
+      .then(user => signUp(user));
+      else if(res.status == 500) {
+        alert(`${form.data.name} is already existed`)
+      }
+    });
+    else alert(form.err);
   }
 
   return (
     <form onSubmit={e => submit(e)}>
       <Card>
         <CardHeader color="primary">
-          <h4 className={classes.cardTitleWhite}>Sign up</h4>
-          <p className={classes.cardCategoryWhite}>To become our memeber</p>
+          <GridContainer>
+            <GridItem xs={8} sm={8} md={8}>
+              <h4 className={classes.cardTitleWhite}>Sign up</h4>
+              <p className={classes.cardCategoryWhite}>To become our memeber</p>
+            </GridItem>
+            <GridItem xs={4} sm={4} md={4}>
+              <Button onClick={() => {setSignedUp(true)}} style={{float: 'right'}} type="button" color="warning">Sign in</Button>
+            </GridItem>
+          </GridContainer>
         </CardHeader>
         <CardBody>
           <GridContainer>
@@ -67,7 +94,7 @@ export default function Signup() {
             <GridItem xs={12} sm={12} md={6}>
               <CustomInput
                 labelText="Full name"
-                id="fname"
+                id="name"
                 formControlProps={{
                   fullWidth: true
                 }}
@@ -75,42 +102,48 @@ export default function Signup() {
             </GridItem>
             <GridItem xs={12} sm={12} md={6}>
               <CustomInput
-                type = 'password'
                 labelText="Password"
                 id="password"
                 formControlProps={{
                   fullWidth: true,
                   type: 'password'
                 }}
+                inputProps={{ type: 'password' }}
               />
             </GridItem>
             <GridItem xs={12} sm={12} md={6}>
               <CustomInput
-                type = 'password'
                 labelText="Confirm password"
-                id="comfirmpassword"
+                id="confirmpassword"
                 formControlProps={{
                   fullWidth: true
+                }}
+                inputProps={{
+                  type: 'password'
                 }}
               />
             </GridItem>
             <GridItem xs={12} sm={12} md={12}>
               <CustomInput
-                type = 'email'
                 labelText="Email"
                 id="email"
                 formControlProps={{
                   fullWidth: true
                 }}
+                inputProps={{
+                  type: 'email'
+                }}
               />
             </GridItem>
             <GridItem xs={12} sm={12} md={12}>
               <CustomInput
-                type = 'tel'
                 labelText="Phone"
                 id="phone"
                 formControlProps={{
                   fullWidth: true
+                }}
+                inputProps={{
+                  type: 'tel'
                 }}
               />
             </GridItem>
@@ -122,4 +155,28 @@ export default function Signup() {
       </Card>
     </form>
   );
+}
+
+const formData = ({ name, username, email, password, confirmpassword, phone }) => {
+  let valid = true;
+  let err = 'All field is required';
+  const data = { name, username, email, password, confirmpassword, phone };
+
+  for (const n in data) {
+    const { value } = data[n];
+    if (!value) valid = false;
+    data[n] = value;
+  }
+
+  if (data.password !== data.confirmpassword) {
+    valid = false;
+    err = 'Password not match';
+  }
+
+  if (valid) {
+    data.id = base64encoding((username.value + password.value));
+    data.password = base64encoding(data.password);
+  }
+
+  return { valid, data, err };
 }

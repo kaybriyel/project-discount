@@ -1,7 +1,6 @@
 import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -9,11 +8,10 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import avatar from "assets/img/faces/marc.jpg";
+import base64encoding from "variables/base64encoder.js";
 
 const styles = {
   cardCategoryWhite: {
@@ -36,50 +34,104 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function Signin() {
+export default function Signin(props) {
+  console.log('props', props);
   const classes = useStyles();
+  const { setSignedIn } = props;
   const submit = (e) => {
     e.preventDefault();
-    const signIn = (user) => {
-      alert('Welcome ' + user.username);
+    const form = formData(e.target); //parse data from form
+    const url = 'http://jsondbapp.herokuapp.com/';
+    const option = {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id: form.id })
+    };
+
+    let curUser;
+    const signIn = (id) => {
+      alert("Welcome " + curUser.name);
+      localStorage.authKey = id;
+      setSignedIn(true);
     }
-    fetch('http://localhost:3001/users/alec').then(res => res.json()).then(user => signIn(user));
+    if (form.valid)
+      fetch(`${url}login/${form.id}`, { method: 'delete' })
+        .then(res => {
+          fetch(`${url}users/${form.id}`)
+            .then(res => {
+              if (res.status == 200) {
+                res.json().then(user => {
+                  curUser = user;
+                  fetch(`${url}login`, option)
+                    .then(res => {
+                      if (res.status == 201) {
+                        res.json().then(id => signIn(id));
+                      }
+                    })
+                })
+              } else if(res.status == 404) {
+                alert('Authentication fails')
+              }
+            })
+        });
+    else alert('All field is required');
   }
 
   return (
     <form onSubmit={e => submit(e)}>
-    <Card>
-      <CardHeader color="primary">
-        <h4 className={classes.cardTitleWhite}>Sign in</h4>
-        <p className={classes.cardCategoryWhite}>To manage your shop</p>
-      </CardHeader>
-      <CardBody>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <CustomInput
-              labelText="Username"
-              id="username"
-              formControlProps={{
-                fullWidth: true
-              }}
-            />
-          </GridItem>
-          <GridItem xs={12} sm={12} md={12}>
-            <CustomInput
-              type = 'password'
-              labelText="Password"
-              id="password"
-              formControlProps={{
-                fullWidth: true
-              }}
-            />
-          </GridItem>
-        </GridContainer>
-     </CardBody>
-      <CardFooter>
-        <Button type="submit" color="primary">Sign in</Button>
-      </CardFooter>
-    </Card>
+      <Card>
+        <CardHeader color="primary">
+          <h4 className={classes.cardTitleWhite}>Sign in</h4>
+          <p className={classes.cardCategoryWhite}>To manage your shop</p>
+        </CardHeader>
+        <CardBody>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <CustomInput
+                value={props.username}
+                labelText="Username"
+                id="username"
+                formControlProps={{
+                  fullWidth: true
+                }}
+                inputProps={{
+                  value: props.username
+                }}
+              />
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
+              <CustomInput
+                labelText="Password"
+                id="password"
+                formControlProps={{
+                  fullWidth: true
+                }}
+                inputProps={{
+                  type: 'password'
+                }}
+              />
+            </GridItem>
+          </GridContainer>
+        </CardBody>
+        <CardFooter>
+          <Button type="submit" color="primary">Sign in</Button>
+        </CardFooter>
+      </Card>
     </form>
   );
+}
+
+const formData = ({ username, password }) => {
+  let valid = true;
+  let id;
+  const { value: uname } = username;
+  const { value: pwd } = password;
+
+  if (!uname || !pwd) valid = false;
+
+  if (valid)
+    id = base64encoding((uname + pwd));
+  return { valid, id };
 }
