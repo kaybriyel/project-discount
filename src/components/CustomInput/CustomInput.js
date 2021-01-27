@@ -23,9 +23,10 @@ export default function CustomInput(props) {
     labelProps,
     inputProps,
     error,
-    success
+    success,
+    type
   } = props;
-
+  
   const labelClasses = classNames({
     [" " + classes.labelRootError]: error,
     [" " + classes.labelRootSuccess]: success && !error
@@ -53,6 +54,7 @@ export default function CustomInput(props) {
         </InputLabel>
       ) : null}
       <Input
+        type = {type ? type : 'text'}
         classes={{
           root: marginTop,
           disabled: classes.disabled,
