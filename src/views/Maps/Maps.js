@@ -35,8 +35,8 @@ import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js"
 const useStyles = makeStyles(styles);
 const GoogleMapFun = () => {
 
-  const [location, setLocation] = useState([]);
-  location.forEach(({ display }) => console.log('state', display));
+  const [shops, setShops] = useState([]);
+  shops.forEach(({ display }) => console.log('state', display));
   // locations.forEach(({display}) => console.log('location',display));
 
   const classes = useStyles();
@@ -73,27 +73,15 @@ const GoogleMapFun = () => {
         }
       }
     ]
-
-
-    console.log(location);
-    setLocation(prev => {
-      const locKey = prev.map(({ name }) => name);
-      for (const l of loc) {
-        const i = locKey.indexOf(l.name);
-        if (i == -1) {
-          prev.push(l);
-        }
-      }
-      console.log(prev)
-      return [...prev];
-    });
-  }
+    console.log('loading location');
+    setShops(loc);
+  }, [shops.length]
   );
   return (
 
     <GoogleMap
       defaultZoom={13}
-      defaultCenter={location[0] ? location[0].location : { lat: 11.566862079045004, lng: 104.89618316900561 }}
+      defaultCenter={shops[0] ? shops[0].location : { lat: 11.566862079045004, lng: 104.89618316900561 }}
       defaultOptions={{
         scrollwheel: false,
         zoomControl: true,
@@ -161,14 +149,14 @@ const GoogleMapFun = () => {
       }}
     >
       {
-        location.map(item => {
+        shops.map(item => {
           return (
-            <>
-              <Marker key={item.name}
+            <div key={item.name} >
+              <Marker
                 position={item.location}
                 onClick={() => {
                   item.display = true;
-                  setLocation([...location])
+                  setShops([...shops])
                 }}
               >
               </Marker>
@@ -178,7 +166,7 @@ const GoogleMapFun = () => {
                   clickable={true}
                   onCloseClick={() => {
                     item.display = false;
-                    setLocation([...location])
+                    setShops([...shops])
                   }
                   }
                 >
@@ -207,7 +195,7 @@ const GoogleMapFun = () => {
                   </GridItem>
                 </InfoWindow>
               )}
-            </>
+            </div>
           )
         })
       }
@@ -218,7 +206,7 @@ const GoogleMapFun = () => {
 const CustomSkinMap = withScriptjs(
   withGoogleMap(() => (
 
-    <GoogleMapFun></GoogleMapFun>
+    <GoogleMapFun />
 
   ))
 );

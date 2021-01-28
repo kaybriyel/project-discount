@@ -51,18 +51,18 @@ export default function Signup(props) {
 
     const signUp = (user) => {
       alert("Signed up successfully");
-      localStorage.auth = user.id;
       setProfile(user);
       setSignedUp(true);
     }
-    if (form.valid) fetch(url, option)
-    .then(res => {
-      if(res.status == 201) res.json()
-      .then(user => signUp(user));
-      else if(res.status == 500) {
-        alert(`${form.data.name} is already existed`)
-      }
-    });
+    if (form.valid)
+      fetch(url, option)
+        .then(res => {
+          if (res.status == 201) res.json()
+            .then(user => signUp(user));
+          else if (res.status == 500) {
+            alert(`${form.data.name} is already existed`)
+          }
+        });
     else alert(form.err);
   }
 
@@ -76,7 +76,7 @@ export default function Signup(props) {
               <p className={classes.cardCategoryWhite}>To become our memeber</p>
             </GridItem>
             <GridItem xs={4} sm={4} md={4}>
-              <Button onClick={() => {setSignedUp(true)}} style={{float: 'right'}} type="button" color="warning">Sign in</Button>
+              <Button onClick={() => { setSignedUp(true) }} style={{ float: 'right' }} type="button" color="warning">Sign in</Button>
             </GridItem>
           </GridContainer>
         </CardHeader>
