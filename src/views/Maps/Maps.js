@@ -20,7 +20,7 @@ import Update from "@material-ui/icons/Update";
 
 import Accessibility from "@material-ui/icons/Accessibility";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   withScriptjs,
@@ -32,46 +32,68 @@ import {
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
-const locations = [
-  {
-    name: "rupp",
-    location: {
-      lat: 11.568469287836823,
-      lng: 104.89062738135897
-    }
-  },
-  {
-    name: "football",
-    location: {
-      lat: 11.569804167388591, lng: 104.89155006118457
-    }
-  },
-  {
-    name: "sunfix",
-    location: {
-      lat: 11.5650331681146, lng: 104.89735261204038
-    }
-  },
-  {
-    name: "place1",
-    location: {
-      lat: 11.566862079045004, lng: 104.89618316900561
-    }
-  }
-];
-
 const useStyles = makeStyles(styles);
 const GoogleMapFun = () => {
-  const [selected, setSelected] = useState({});
+
+  const [location, setLocation] = useState([]);
+  location.forEach(({ display }) => console.log('state', display));
+  // locations.forEach(({display}) => console.log('location',display));
+
   const classes = useStyles();
-  const onSelect = item => {
-    setSelected(item);
+
+  useEffect(() => {
+    const loc = [
+      {
+        name: "rupp",
+        display: true,
+        location: {
+          lat: 11.568469287836823,
+          lng: 104.89062738135897
+        }
+      },
+      {
+        name: "football",
+        display: true,
+        location: {
+          lat: 11.569804167388591, lng: 104.89155006118457
+        }
+      },
+      {
+        name: "sunfix",
+        display: true,
+        location: {
+          lat: 11.5650331681146, lng: 104.89735261204038
+        }
+      },
+      {
+        name: "place1",
+        display: true,
+        location: {
+          lat: 11.566862079045004, lng: 104.89618316900561
+        }
+      }
+    ]
+
+
+    console.log(location);
+    setLocation(prev => {
+      const locKey = prev.map(({ name }) => name);
+      for (const l of loc) {
+        const i = locKey.indexOf(l.name);
+        if (i == -1) {
+          prev.push(l);
+        }
+      }
+      console.log(prev)
+      return [...prev];
+    });
   }
+  );
   return (
 
     <GoogleMap
       defaultZoom={13}
-      defaultCenter={locations[0].location}
+      defaultCenter={location[0] ? location[0].location : { lat: 11.566862079045004, lng: 104.89618316900561 }}
       defaultOptions={{
         scrollwheel: false,
         zoomControl: true,
@@ -139,105 +161,55 @@ const GoogleMapFun = () => {
       }}
     >
       {
-        locations.map(item => {
+        location.map(item => {
           return (
-            <Marker key={item.name}
-              position={item.location}
-              onClick={() => onSelect(item)}
-            />
+            <>
+              <Marker key={item.name}
+                position={item.location}
+                onClick={() => {
+                  item.display = true;
+                  setLocation([...location])
+                }}
+              >
+              </Marker>
+              {item.display && (
+                <InfoWindow
+                  position={item.location}
+                  clickable={true}
+                  onCloseClick={() => {
+                    item.display = false;
+                    setLocation([...location])
+                  }
+                  }
+                >
+                  <GridItem>
+                    <Card>
+                      <CardHeader color="warning" stats icon>
+                        <CardIcon color="warning">
+                          <Icon>content_copy</Icon>
+                        </CardIcon>
+                        <p className={classes.cardCategory}>{item.name}</p>
+                        <h3 className={classes.cardTitle}>
+                          49/50 <small>GB</small>
+                        </h3>
+                      </CardHeader>
+                      <CardFooter stats>
+                        <div className={classes.stats}>
+                          <Danger>
+                            <Warning />
+                          </Danger>
+                          <a href="#pablo" onClick={e => e.preventDefault()}>
+                            Get more space
+                    </a>
+                        </div>
+                      </CardFooter>
+                    </Card>
+                  </GridItem>
+                </InfoWindow>
+              )}
+            </>
           )
         })
-      }
-      {
-        selected.location &&
-        (
-          <InfoWindow
-            position={selected.location}
-            clickable={true}
-
-            onCloseClick={() => setSelected({})}
-          >
-           
-
-            <GridContainer>
-              <GridItem xs={12} sm={6} md={3}>
-                <Card>
-                  <CardHeader color="warning" stats icon>
-                    <CardIcon color="warning">
-                      <Icon>content_copy</Icon>
-                    </CardIcon>
-                    <p className={classes.cardCategory}>Used Space</p>
-                    <h3 className={classes.cardTitle}>
-                      49/50 <small>GB</small>
-                    </h3>
-                  </CardHeader>
-                  <CardFooter stats>
-                    <div className={classes.stats}>
-                      <Danger>
-                        <Warning />
-                      </Danger>
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
-                        Get more space
-                </a>
-                    </div>
-                  </CardFooter>
-                </Card>
-              </GridItem>
-              <GridItem xs={12} sm={6} md={3}>
-                <Card>
-                  <CardHeader color="success" stats icon>
-                    <CardIcon color="success">
-                      <Store />
-                    </CardIcon>
-                    <p className={classes.cardCategory}>Revenue</p>
-                    <h3 className={classes.cardTitle}>$34,245</h3>
-                  </CardHeader>
-                  <CardFooter stats>
-                    <div className={classes.stats}>
-                      <DateRange />
-                Last 24 Hours
-              </div>
-                  </CardFooter>
-                </Card>
-              </GridItem>
-              <GridItem xs={12} sm={6} md={3}>
-                <Card>
-                  <CardHeader color="danger" stats icon>
-                    <CardIcon color="danger">
-                      <Icon>info_outline</Icon>
-                    </CardIcon>
-                    <p className={classes.cardCategory}>Fixed Issues</p>
-                    <h3 className={classes.cardTitle}>75</h3>
-                  </CardHeader>
-                  <CardFooter stats>
-                    <div className={classes.stats}>
-                      <LocalOffer />
-                Tracked from Github
-              </div>
-                  </CardFooter>
-                </Card>
-              </GridItem>
-              <GridItem xs={12} sm={6} md={3}>
-                <Card>
-                  <CardHeader color="info" stats icon>
-                    <CardIcon color="info">
-                      <Accessibility />
-                    </CardIcon>
-                    <p className={classes.cardCategory}>Followers</p>
-                    <h3 className={classes.cardTitle}>+245</h3>
-                  </CardHeader>
-                  <CardFooter stats>
-                    <div className={classes.stats}>
-                      <Update />
-                Just Updated
-              </div>
-                  </CardFooter>
-                </Card>
-              </GridItem>
-            </GridContainer>
-
-          </InfoWindow>
-        )
       }
     </GoogleMap>
   );
@@ -252,43 +224,7 @@ const CustomSkinMap = withScriptjs(
 );
 
 export default function Maps() {
-  const locations = [
-    {
-      name: "Location 1",
-      location: {
-        lat: 41.3954,
-        lng: 2.162
-      },
-    },
-    {
-      name: "Location 2",
-      location: {
-        lat: 41.3917,
-        lng: 2.1649
-      },
-    },
-    {
-      name: "Location 3",
-      location: {
-        lat: 41.3773,
-        lng: 2.1585
-      },
-    },
-    {
-      name: "Location 4",
-      location: {
-        lat: 41.3797,
-        lng: 2.1682
-      },
-    },
-    {
-      name: "Location 5",
-      location: {
-        lat: 41.4055,
-        lng: 2.1915
-      },
-    }
-  ];
+
   return (
     <CustomSkinMap
 
@@ -300,3 +236,7 @@ export default function Maps() {
     />
   );
 }
+
+
+
+
