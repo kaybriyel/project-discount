@@ -55,27 +55,20 @@ export default function Signin(props) {
       localStorage.auth = JSON.stringify(id);
       setSignedIn(true);
     }
-    if (form.valid)
-      fetch(`${apiUrl}login/${form.id}`, { method: 'delete' })
-        .then(res => {
-          fetch(`${apiUrl}users/${form.id}`)
-            .then(res => {
-              if (res.status == 200) {
-                res.json().then(user => {
-                  curUser = user;
-                  fetch(`${apiUrl}login`, option)
-                    .then(res => {
-                      if (res.status == 201) {
-                        res.json().then(id => signIn(id));
-                      }
-                    })
-                })
-              } else if(res.status == 404) {
-                alert('Authentication fails')
-              }
-            })
-        });
-    else alert('All field is required');
+    
+    form.valid && (async () => {
+      // request delete old session
+      await fetch(`${apiUrl}login/${form.id}`, { method: 'delete' });
+      // verify user
+      let res = await fetch(`${apiUrl}users/${form.id}`);
+      res.ok && (curUser = await res.json());
+      !res.ok && alert('Authentication fails');
+      // login
+      res.ok && (res = await fetch(`${apiUrl}login`, option));
+      res.ok && signIn(await res.json());
+    })();
+
+    !form.valid && alert('All field is required');
   }
 
   return (
@@ -89,7 +82,6 @@ export default function Signin(props) {
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
               <CustomInput
-                value={props.username}
                 labelText="Username"
                 id="username"
                 formControlProps={{

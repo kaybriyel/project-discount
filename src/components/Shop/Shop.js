@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -51,33 +51,41 @@ const useStyles = makeStyles(styles);
 const Shop = (props) => {
     const classes = useStyles();
     const [display, setDisplay] = useState(props.display);
+    const [itemType, setItemType] = useState('hot drink');
+    const [items, setItems] = useState(props.items.drink[itemType]);
+
     const toggleItem = () => {
-        setDisplay(prev => {
-            if (prev == '') return 'd-none';
-            else return '';
-        });
+        setDisplay(!display);
     }
 
-    const BTN = (prop) => {
-        const [text, setText] = useState(prop.cat);
+    const handleClick = (event) => {
+        setItemType(event.target.textContent);
+        setDisplay(true);
+    }
+
+    const BTN = (props) => {
+        const [text, setText] = useState(props.cat);
         return (
-            <Button type="button" color="info">{text}</Button>
+            <Button type="button" onClick={handleClick} color="info">{text}</Button>
         );
     }
 
     //will replace by categories in shops from API
-    const category = ["HOT DRINK", "SOFT DRINK", "FRAPPE", "ICE & CREAM"];
+    const category = [];
+    for(const cat in props.items.drink) category.push(cat);
+
+    useEffect(() => {
+        // alert(itemType);
+        itemType && setItems(props.items.drink[itemType]);
+    }, [itemType]);
     return (
         <Card key={props.name}>
             <CardHeader color="info">
                 <h4 onClick={toggleItem} className={classes.cardTitleWhite}>{props.name}</h4>
-                <BTN cat={category[0]} />
-                <BTN cat={category[1]} />
-                <BTN cat={category[2]} />
-                <BTN cat={category[3]} />
+                {category.map(cat => <BTN cat={cat}/>)}
             </CardHeader>
             <CardBody>
-                <Cardshopitem display={display} color="info" />
+                <Cardshopitem display={display} items={items} color="info" />
             </CardBody>
         </Card>
     );

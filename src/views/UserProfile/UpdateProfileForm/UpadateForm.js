@@ -36,7 +36,8 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function UserForm() {
+export default function UserForm(props) {
+  const {name, username, password, email, phone} = props;
   const classes = useStyles();
   return (
     <form>
@@ -54,6 +55,9 @@ export default function UserForm() {
                     formControlProps={{
                       fullWidth: true
                     }}
+                    inputProps={{
+                      value: username
+                    }}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -62,6 +66,9 @@ export default function UserForm() {
                     id="name"
                     formControlProps={{
                       fullWidth: true
+                    }}
+                    inputProps={{
+                      value: name
                     }}
                   />
                 </GridItem>
@@ -73,7 +80,8 @@ export default function UserForm() {
                       fullWidth: true
                     }}
                     inputProps={{
-                      type: 'email'
+                      type: 'email',
+                      value: email
                     }}
                   />
                 </GridItem>
@@ -85,7 +93,8 @@ export default function UserForm() {
                       fullWidth: true
                     }}
                     inputProps={{
-                      type:'tel'
+                      type:'tel',
+                      value: phone
                     }}
                   />
                 </GridItem>
@@ -97,7 +106,7 @@ export default function UserForm() {
                       fullWidth: true
                     }}
                     inputProps={{
-                      type: 'password'
+                      type: 'password',
                     }}
                   />
                 </GridItem>
