@@ -12,6 +12,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
 import base64encoding from "variables/base64encoder.js";
+import {apiUrl} from "variables/general.js";
 
 const styles = {
   cardCategoryWhite: {
@@ -35,13 +36,11 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function Signin(props) {
-  console.log('props', props);
   const classes = useStyles();
   const { setSignedIn } = props;
   const submit = (e) => {
     e.preventDefault();
     const form = formData(e.target); //parse data from form
-    const url = 'http://jsondbapp.herokuapp.com/';
     const option = {
       method: 'post',
       headers: {
@@ -51,20 +50,20 @@ export default function Signin(props) {
     };
 
     let curUser;
-    const signIn = (id) => {
+    const signIn = ({id}) => {
       alert("Welcome " + curUser.name);
-      localStorage.authKey = id;
+      localStorage.auth = JSON.stringify(id);
       setSignedIn(true);
     }
     if (form.valid)
-      fetch(`${url}login/${form.id}`, { method: 'delete' })
+      fetch(`${apiUrl}login/${form.id}`, { method: 'delete' })
         .then(res => {
-          fetch(`${url}users/${form.id}`)
+          fetch(`${apiUrl}users/${form.id}`)
             .then(res => {
               if (res.status == 200) {
                 res.json().then(user => {
                   curUser = user;
-                  fetch(`${url}login`, option)
+                  fetch(`${apiUrl}login`, option)
                     .then(res => {
                       if (res.status == 201) {
                         res.json().then(id => signIn(id));

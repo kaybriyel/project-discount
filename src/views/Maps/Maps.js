@@ -30,51 +30,24 @@ import {
   InfoWindow
 } from "react-google-maps";
 
+import { apiUrl } from 'variables/general.js';
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
 const useStyles = makeStyles(styles);
 const GoogleMapFun = () => {
 
   const [shops, setShops] = useState([]);
-  shops.forEach(({ display }) => console.log('state', display));
-  // locations.forEach(({display}) => console.log('location',display));
 
   const classes = useStyles();
 
   useEffect(() => {
-    const loc = [
-      {
-        name: "rupp",
-        display: true,
-        location: {
-          lat: 11.568469287836823,
-          lng: 104.89062738135897
-        }
-      },
-      {
-        name: "football",
-        display: true,
-        location: {
-          lat: 11.569804167388591, lng: 104.89155006118457
-        }
-      },
-      {
-        name: "sunfix",
-        display: true,
-        location: {
-          lat: 11.5650331681146, lng: 104.89735261204038
-        }
-      },
-      {
-        name: "place1",
-        display: true,
-        location: {
-          lat: 11.566862079045004, lng: 104.89618316900561
-        }
-      }
-    ]
-    console.log('loading location');
-    setShops(loc);
+    (async () => {
+      let data;
+      const res = await fetch(apiUrl + 'shops');
+      res.ok && (data = (await res.json()).map(s => {s.display = true; return s;}));
+      res.ok && setShops(data);
+      console.log('loading location');
+    })();
   }, [shops.length]
   );
   return (

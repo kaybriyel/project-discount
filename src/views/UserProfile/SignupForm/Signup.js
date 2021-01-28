@@ -34,7 +34,6 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function Signup(props) {
-  console.log('props', props);
   const classes = useStyles();
   const { setProfile, setSignedUp } = props;
   const submit = (e) => {
@@ -177,6 +176,6 @@ const formData = ({ name, username, email, password, confirmpassword, phone }) =
     data.id = base64encoding((username.value + password.value));
     data.password = base64encoding(data.password);
   }
-
+  delete data.confirmpassword;
   return { valid, data, err };
 }
