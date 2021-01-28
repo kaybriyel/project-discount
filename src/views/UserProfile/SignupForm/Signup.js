@@ -11,6 +11,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
+import {apiUrl} from 'variables/general.js';
 import base64encoding from "variables/base64encoder.js";
 const styles = {
   cardCategoryWhite: {
@@ -39,7 +40,6 @@ export default function Signup(props) {
   const submit = (e) => {
     e.preventDefault();
     const form = formData(e.target); //parse data from form
-    const url = 'http://jsondbapp.herokuapp.com/users';
     const option = {
       method: 'post',
       headers: {
@@ -53,16 +53,16 @@ export default function Signup(props) {
       setProfile(user);
       setSignedUp(true);
     }
-    if (form.valid)
-      fetch(url, option)
-        .then(res => {
-          if (res.status == 201) res.json()
-            .then(user => signUp(user));
-          else if (res.status == 500) {
-            alert(`${form.data.name} is already existed`)
-          }
-        });
-    else alert(form.err);
+    
+    form.valid && (async () => {
+      let user;
+      const res = await fetch(apiUrl + 'users', option);
+      res.ok && (user = await res.json());
+      user && signUp(user);
+      !res.ok && alert(`${form.data.name} is already existed`);
+    })();
+
+    !form.valid && alert(form.err);
   }
 
   return (

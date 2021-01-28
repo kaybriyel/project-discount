@@ -9,6 +9,7 @@ import Card from "components/Card/Card.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 
+import { apiUrl } from 'variables/general.js';
 import Signin from './SigninForm/Signin';
 import Signup from './SignupForm/Signup';
 import UpdateProfile from './UpdateProfileForm/UpadateForm';
@@ -36,26 +37,38 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function UserProfile() {
+  console.log('checking...');
   const [profile, setProfile] = useState({});
   const [signedUp, setSignedUp] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
+  console.log(signedIn, signedUp);
   const setter = { setProfile, setSignedUp, setSignedIn };
   useEffect(() => {
-    if (profile.id) {
-      fetch(`https://jsondbapp.herokuapp.com/login/${profile.id}`)
-        .then(res => res.json())
-        .then(session => {
-          alert('SessionID: ' + session);
-          setSignedIn(true);
-        });
-    }
-  }, [profile, signedIn]);
+    let id = localStorage.auth;
+    let data;
+    id && (id = JSON.parse(id));
+    console.log(id);
+    id && (async () => {
+      //  get from login list
+      let res = await fetch(`${apiUrl}login/${id}`);
+      console.log('Authenticating...');
+      res.ok && (data = await res.json());
+      // if logged in, get from users
+      res.ok && (res = await fetch(`${apiUrl}users/${id}`)); // get full profile
+      res.ok && (data = await res.json());
+      console.log(signedIn, data);
+      data && setSignedIn(true);
+      console.log('>>> Authenticated');
+      !profile.id && setProfile(data);
+    })();
+  }, [signedIn]);
 
   return (
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
-          {signedUp ? <Signin {...profile} {...setter}/> : <Signup {...profile} {...setter} />}
+          {(!signedUp) && (signedIn ? <UpdateProfile {...profile} {...setter} /> : <Signup {...profile} {...setter} />)}
+          {signedUp && (signedIn ? <UpdateProfile {...profile} {...setter} /> : <Signin {...profile} {...setter} />)}
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Userprofile />
@@ -64,6 +77,7 @@ export default function UserProfile() {
     </div>
   );
 }
+
 
 const Userprofile = () => {
   const classes = useStyles();
