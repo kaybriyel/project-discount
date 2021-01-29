@@ -49,7 +49,7 @@ export default function UserProfile() {
     (async () => {
       let data = await authenticate(id);
       data && setSignedIn(true);
-      !profile.id && setProfile(data);
+      profile && !profile.id && setProfile(data);
     })();
   }, [signedIn]);
 

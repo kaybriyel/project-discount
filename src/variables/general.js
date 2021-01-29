@@ -18,7 +18,7 @@ var server = [
   'Sign contract for "What are conference organizers afraid of?"'
 ];
 
-const apiUrl = 'https://jsondbapp.herokuapp.com/';
+const apiUrl = 'https://projectdiscount.herokuapp.com/';
 
 module.exports = {
   // these 3 are used to create the tasks lists in TasksCard - Dashboard view

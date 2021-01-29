@@ -38,11 +38,11 @@ const useStyles = makeStyles(styles);
 export default function Signin(props) {
   const classes = useStyles();
   const { setSignedIn } = props;
-  const submit = async (e) => {
+  const submit = (e) => {
     e.preventDefault();
     const form = formData(e.target); //parse data from form
 
-    form.valid && setSignedIn(await signIn(form.id));
+    form.valid && (async () => setSignedIn(await signIn(form.id)))();
     !form.valid && alert('All field is required');
   }
 

@@ -35,6 +35,18 @@ import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 // core components/views for RTL layout
 
+const authenticate = (id) => {
+  const http = new XMLHttpRequest();
+  let auth = false;
+  http.onreadystatechange = function() {
+    this.readyState == 4 && this.status == 200 && (auth = !auth);
+  }
+
+  http.open('GET', `/login/${id}`, false);
+  http.send();
+
+  return auth;
+}
 
 const dashboardRoutes = [
   {
@@ -57,7 +69,7 @@ const dashboardRoutes = [
     icon: Store,
     component: Myshop,
     layout: "/",
-    isAuthed: localStorage.auth ? true:false
+    isAuthed: localStorage.auth ? authenticate(localStorage.auth):false
   },
   {
     path: "user",
