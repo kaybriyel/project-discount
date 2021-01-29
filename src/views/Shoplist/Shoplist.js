@@ -21,7 +21,7 @@ export default function Shoplist() {
       {
         shops.map(shop => {
           return (
-            <Shop key={shop.name} display={false} name={shop.name} items={shop.items} />
+            <Shop key={shop.id} display={false} name={shop.name} items={shop.items} />
           );
         })
       }
