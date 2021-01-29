@@ -7,7 +7,6 @@ import {apiUrl} from 'variables/general.js';
 
 export default function Shoplist() {
   const [shops, setShop] = useState([]);
-
   useEffect(() => {
     (async () => {
       const res = await fetch(apiUrl + 'shops');
@@ -21,7 +20,7 @@ export default function Shoplist() {
       {
         shops.map(shop => {
           return (
-            <Shop key={shop.id} display={false} name={shop.name} items={shop.items} />
+            <Shop key={shop.id} display={true} name={shop.name} items={shop.items} />
           );
         })
       }

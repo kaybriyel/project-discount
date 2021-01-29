@@ -12,8 +12,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
 import base64encoding from "variables/base64encoder.js";
-import {apiUrl} from "variables/general.js";
-
+import {signIn} from 'variables/fetchapi.js';
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -34,33 +33,6 @@ const styles = {
 };
 
 const useStyles = makeStyles(styles);
-
-
-const signIn = async (id) => {
-	 const authenticate = ({ id, name }) => {
-      alert("Welcome " + name);
-      localStorage.auth = JSON.stringify(id);
-    }
-	 const option = {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ id })
-    };
-	
-	let user;
-    // request delete old session
-    await fetch(`${apiUrl}login/${id}`, { method: 'delete' });
-    // verify user
-    let res = await fetch(`${apiUrl}users/${id}`);
-    res.ok && (user = await res.json());
-    !res.ok && alert('Authentication fails');
-    // login
-    res.ok && (res = await fetch(`${apiUrl}login`, option));
-    res.ok && authenticate(user);
-	if(res.ok) return true;
-};
 
 
 export default function Signin(props) {
@@ -124,8 +96,6 @@ const formData = ({ username, password }) => {
   const { value: pwd } = password;
 
   if (!uname || !pwd) valid = false;
-
-  if (valid)
-    id = base64encoding((uname + pwd));
+  id = valid ? base64encoding((uname + pwd)):'';
   return { valid, id };
 }

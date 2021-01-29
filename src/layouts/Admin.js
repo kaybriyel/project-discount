@@ -25,7 +25,7 @@ const switchRoutes = (
     {routes.map((prop, key) => {
       if (prop.layout === "/") {
         return (
-          <Route
+         <Route
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
@@ -41,6 +41,7 @@ const switchRoutes = (
 const useStyles = makeStyles(styles);
 
 export default function Admin({ ...rest }) {
+  console.log('admin', rest)
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
@@ -67,7 +68,6 @@ export default function Admin({ ...rest }) {
     setMobileOpen(!mobileOpen);
   };
   const getRoute = () => {
-	// console.log(window.location.pathname);
     return window.location.pathname !== "/maps";
   };
   const resizeFunction = () => {

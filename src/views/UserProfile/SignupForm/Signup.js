@@ -11,8 +11,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import {apiUrl} from 'variables/general.js';
 import base64encoding from "variables/base64encoder.js";
+import {signUp} from "variables/fetchapi.js";
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -37,32 +37,19 @@ const useStyles = makeStyles(styles);
 export default function Signup(props) {
   const classes = useStyles();
   const { setProfile, setSignedUp } = props;
-  const submit = (e) => {
+  
+  const submit = async (e) => {
     e.preventDefault();
     const form = formData(e.target); //parse data from form
-    const option = {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(form.data)
-    };
 
-    const signUp = (user) => {
+    const success = (user) => {
       alert("Signed up successfully");
       setProfile(user);
       setSignedUp(true);
     }
     
-    form.valid && (async () => {
-      let user;
-      const res = await fetch(apiUrl + 'users', option);
-      res.ok && (user = await res.json());
-      user && signUp(user);
-      !res.ok && alert(`${form.data.name} is already existed`);
-    })();
-
-    !form.valid && alert(form.err);
+    const res = form.valid ? (await signUp(form.data)) : alert(form.err);
+	res && res.ok && success(res.user);
   }
 
   return (

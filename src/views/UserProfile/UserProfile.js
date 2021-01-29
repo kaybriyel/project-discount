@@ -9,7 +9,7 @@ import Card from "components/Card/Card.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 
-import { apiUrl } from 'variables/general.js';
+import { authenticate } from 'variables/fetchapi.js';
 import Signin from './SigninForm/Signin';
 import Signup from './SignupForm/Signup';
 import UpdateProfile from './UpdateProfileForm/UpadateForm';
@@ -45,20 +45,10 @@ export default function UserProfile() {
   const setter = { setProfile, setSignedUp, setSignedIn };
   useEffect(() => {
     let id = localStorage.auth;
-    let data;
-    id && (id = JSON.parse(id));
-    console.log(id);
-    id && (async () => {
-      //  get from login list
-      let res = await fetch(`${apiUrl}login/${id}`);
-      console.log('Authenticating...');
-      res.ok && (data = await res.json());
-      // if logged in, get from users
-      res.ok && (res = await fetch(`${apiUrl}users/${id}`)); // get full profile
-      res.ok && (data = await res.json());
-      console.log(signedIn, data);
+    id && (id = JSON.parse(id)) &&
+    (async () => {
+      let data = await authenticate(id);
       data && setSignedIn(true);
-      console.log('>>> Authenticated');
       !profile.id && setProfile(data);
     })();
   }, [signedIn]);
