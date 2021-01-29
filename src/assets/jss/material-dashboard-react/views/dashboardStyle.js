@@ -1,6 +1,7 @@
 import {
   successColor,
   whiteColor,
+  dangerColor,
   grayColor,
   hexToRgb
 } from "assets/jss/material-dashboard-react.js";
@@ -8,6 +9,9 @@ import {
 const dashboardStyle = {
   successText: {
     color: successColor[0]
+  },
+  dangerText: {
+    color: dangerColor[0]
   },
   upArrowCardCategory: {
     width: "16px",

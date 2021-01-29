@@ -30,15 +30,14 @@ export default function Cardshopitem(props) {
 
   return (
     <GridContainer>
-      {display && items.map(item => <Item name={item} />)}
+      {display && items.map(item => <Item {...item} />)}
     </GridContainer>
   );
 }
 
-
 const Item = (props) => {
   const classes = useStyles();
-  const { name } = props;
+  const { name, discount, price } = props;
   return (
     <GridItem xs={12} sm={12} md={4}>
       <Card>
@@ -48,10 +47,12 @@ const Item = (props) => {
         <CardBody>
           <h4 className={classes.cardTitle}>{name}</h4>
           <p className={classes.cardCategory}>
+            <span className={classes.dangerText}>Full Price ${price}</span>
+            <div />
             <span className={classes.successText}>
-              <ArrowDownward className={classes.upArrowCardCategory} /> 55%
+              <ArrowDownward className={classes.upArrowCardCategory} /> {discount}%
             </span>
-            {' '} on sales
+            {' '} On sale ${(price - (price * (discount/100))).toFixed(2)}
           </p>
         </CardBody>
         <CardFooter chart>

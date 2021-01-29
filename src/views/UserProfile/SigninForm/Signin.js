@@ -35,39 +35,42 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function Signin(props) {
-  const classes = useStyles();
-  const { setSignedIn } = props;
-  const submit = (e) => {
-    e.preventDefault();
-    const form = formData(e.target); //parse data from form
-    const option = {
+
+const signIn = async (id) => {
+	 const authenticate = ({ id, name }) => {
+      alert("Welcome " + name);
+      localStorage.auth = JSON.stringify(id);
+    }
+	 const option = {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ id: form.id })
+      body: JSON.stringify({ id })
     };
+	
+	let user;
+    // request delete old session
+    await fetch(`${apiUrl}login/${id}`, { method: 'delete' });
+    // verify user
+    let res = await fetch(`${apiUrl}users/${id}`);
+    res.ok && (user = await res.json());
+    !res.ok && alert('Authentication fails');
+    // login
+    res.ok && (res = await fetch(`${apiUrl}login`, option));
+    res.ok && authenticate(user);
+	if(res.ok) return true;
+};
 
-    let curUser;
-    const signIn = ({id}) => {
-      alert("Welcome " + curUser.name);
-      localStorage.auth = JSON.stringify(id);
-      setSignedIn(true);
-    }
-    
-    form.valid && (async () => {
-      // request delete old session
-      await fetch(`${apiUrl}login/${form.id}`, { method: 'delete' });
-      // verify user
-      let res = await fetch(`${apiUrl}users/${form.id}`);
-      res.ok && (curUser = await res.json());
-      !res.ok && alert('Authentication fails');
-      // login
-      res.ok && (res = await fetch(`${apiUrl}login`, option));
-      res.ok && signIn(await res.json());
-    })();
 
+export default function Signin(props) {
+  const classes = useStyles();
+  const { setSignedIn } = props;
+  const submit = async (e) => {
+    e.preventDefault();
+    const form = formData(e.target); //parse data from form
+
+    form.valid && setSignedIn(await signIn(form.id));
     !form.valid && alert('All field is required');
   }
 
