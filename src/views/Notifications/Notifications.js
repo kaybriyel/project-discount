@@ -115,7 +115,6 @@ export default function Notifications() {
             setBR(false);
           }, 6000);
         }
-        break;
       default:
         break;
     }
@@ -125,29 +124,33 @@ export default function Notifications() {
       <CardHeader color="primary">
         <h4 className={classes.cardTitleWhite}>Notifications</h4>
         <p className={classes.cardCategoryWhite}>
-          Handcrafted by our friends from{" "}
+          This area will display some notifications about {" "}
           <a
             target="_blank"
             href="https://material-ui-next.com/?ref=creativetime"
           >
-            Material UI
+            Shops
           </a>{" "}
-          and styled by{" "}
+          and {" "}
           <a
             target="_blank"
             href="https://www.creative-tim.com/?ref=mdr-notifications-page"
           >
-            Creative Tim
+            Items with special discount
           </a>
-          . Please checkout the{" "}
-          <a href="#pablo" target="_blank">
-            full documentation
-          </a>
-          .
         </p>
       </CardHeader>
       <CardBody>
-        <GridContainer>
+        
+      </CardBody>
+    </Card>
+  );
+}
+
+
+
+/*
+<GridContainer>
           <GridItem xs={12} sm={12} md={6}>
             <h5>Notifications Style</h5>
             <br />
@@ -340,7 +343,5 @@ export default function Notifications() {
             </GridContainer>
           </GridItem>
         </GridContainer>
-      </CardBody>
-    </Card>
-  );
-}
+
+*/

@@ -48,14 +48,9 @@ const authenticate = (id) => {
   return auth;
 }
 
+
 const dashboardRoutes = [
-  {
-    path: "dashboard",
-    name: "Dashboard",
-    icon: Dashboard,
-    component: DashboardPage,
-    layout: "/"
-  },
+
   {
     path: "shoplist",
     name: "Shoplist",
@@ -80,23 +75,9 @@ const dashboardRoutes = [
   },
   {
     path: "table",
-    name: "Table List",
+    name: "Owner List",
     icon: "content_paste",
     component: TableList,
-    layout: "/"
-  },
-  {
-    path: "typography",
-    name: "Typography",
-    icon: LibraryBooks,
-    component: Typography,
-    layout: "/"
-  },
-  {
-    path: "icons",
-    name: "Icons",
-    icon: BubbleChart,
-    component: Icons,
     layout: "/"
   },
   {
@@ -121,3 +102,29 @@ export default dashboardRoutes;
 export function Authenticate(id) {
   return authenticate(id);
 }
+
+
+
+/**
+ *   {
+    path: "dashboard",
+    name: "Dashboard",
+    icon: Dashboard,
+    component: DashboardPage,
+    layout: "/"
+  },
+  {
+    path: "typography",
+    name: "Typography",
+    icon: LibraryBooks,
+    component: Typography,
+    layout: "/"
+  },
+ * {
+    path: "icons",
+    name: "Icons",
+    icon: BubbleChart,
+    component: Icons,
+    layout: "/"
+  },
+ */

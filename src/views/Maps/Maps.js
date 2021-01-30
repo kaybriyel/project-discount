@@ -4,7 +4,7 @@ import Icon from "@material-ui/core/Icon";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 // import GridContainer from "components/Grid/GridContainer.js";
-import Danger from "components/Typography/Danger.js";
+import Primary from "components/Typography/Primary.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
@@ -149,19 +149,16 @@ const GoogleMapFun = () => {
                         <CardIcon color="warning">
                           <Icon>content_copy</Icon>
                         </CardIcon>
-                        <p className={classes.cardCategory}>{item.name}</p>
+                        <p className={classes.cardCategory}>{item.category}</p>
                         <h3 className={classes.cardTitle}>
-                          49/50 <small>GB</small>
+                          {item.name}
                         </h3>
                       </CardHeader>
                       <CardFooter stats>
                         <div className={classes.stats}>
-                          <Danger>
-                            <Warning />
-                          </Danger>
-                          <a href="#pablo" onClick={e => e.preventDefault()}>
-                            Get more space
-                    </a>
+                          <Primary>
+                            Visit
+                          </Primary>
                         </div>
                       </CardFooter>
                     </Card>

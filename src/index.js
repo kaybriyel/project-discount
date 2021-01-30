@@ -32,7 +32,7 @@ ReactDOM.render(
   <Router history={hist}>
     <Switch>
       <Route path="/" component={Admin} />
-      <Redirect from="/" to="/dashboard" />
+      <Redirect from="/" to="/shoplist" />
     </Switch>
   </Router>,
   document.getElementById("root")

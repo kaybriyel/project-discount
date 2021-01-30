@@ -48,28 +48,33 @@ export default function TableList() {
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Simple Table</h4>
+            <h4 className={classes.cardTitleWhite}>Shop owners</h4>
             <p className={classes.cardCategoryWhite}>
-              Here is a subtitle for this table
+              Here is the list of shops and shop owners
             </p>
           </CardHeader>
           <CardBody>
             <Table
               tableHeaderColor="primary"
-              tableHead={["Name", "Country", "City", "Salary"]}
+              tableHead={["Owner", "Shop", "Location", "Category"]}
               tableData={[
-                ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"],
-                ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
-                ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"],
-                ["Philip Chaney", "Korea, South", "Overland Park", "$38,735"],
-                ["Doris Greene", "Malawi", "Feldkirchen in Kärnten", "$63,542"],
-                ["Mason Porter", "Chile", "Gloucester", "$78,615"]
+                ["Mr. Amazon", "Amazon", "Kampuchea Krom", "Drink"],
+                ["Mr. Koi", "Koi", "Tumnup Tek", "Drink"],
+                ["Mr. Zando", "Zando", "Toul Tompoung", "Clothes"],
+                ["Mr. Starbuck", "Star buck", "BKK", "Drink"],
+                ["Mr. KFC", "KFC", "Kampuchea Krom", "Food & Drink"],
+                ["Mr. Brown", "Brown", "Sovanna", "Drink"]
               ]}
             />
           </CardBody>
         </Card>
       </GridItem>
-      <GridItem xs={12} sm={12} md={12}>
+    </GridContainer>
+  );
+}
+
+/**
+ *       <GridItem xs={12} sm={12} md={12}>
         <Card plain>
           <CardHeader plain color="primary">
             <h4 className={classes.cardTitleWhite}>
@@ -107,6 +112,5 @@ export default function TableList() {
           </CardBody>
         </Card>
       </GridItem>
-    </GridContainer>
-  );
-}
+
+ */

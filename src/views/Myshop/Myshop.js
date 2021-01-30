@@ -18,13 +18,7 @@ export default function Myshop() {
 
   return (
     <div>
-      {
-        shops.map(shop => {
-          return (
-            <Shop key={shop.id} display={false} name={shop.name} items={shop.items} />
-          );
-        })
-      }
+        {shops.length && <Shop display={false} name={shops[0].name} items={shops[0].items} />}
     </div>
   );
 }

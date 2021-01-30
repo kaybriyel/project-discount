@@ -37,6 +37,8 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function UserProfile() {
+  const classes = useStyles();
+
   console.log('checking...');
   const [profile, setProfile] = useState({});
   const [signedUp, setSignedUp] = useState(false);
@@ -53,6 +55,29 @@ export default function UserProfile() {
     })();
   }, [signedIn]);
 
+
+const Userprofile = () => {
+  // const a = true;
+  // if(a) return null;
+  return (
+    <Card profile>
+      <CardAvatar profile>
+        <a href="#pablo" onClick={e => e.preventDefault()}>
+          <img src={null} alt="" />
+        </a>
+      </CardAvatar>
+      <CardBody profile>
+        <h6 className={classes.cardCategory}>Information</h6>
+        <h4 className={classes.cardTitle}>Please fill in all the input</h4>
+        <p className={classes.description}>
+              </p>
+          <Button onClick={() => {setSignedUp(!signedUp)}} color="primary" round>
+          {signedUp ? 'Sign up': 'Sign in'}
+          </Button>
+      </CardBody>
+    </Card>
+  );
+}
   return (
     <div>
       <GridContainer>
@@ -68,28 +93,3 @@ export default function UserProfile() {
   );
 }
 
-
-const Userprofile = () => {
-  const classes = useStyles();
-  return (
-    <Card profile>
-      <CardAvatar profile>
-        <a href="#pablo" onClick={e => e.preventDefault()}>
-          <img src={avatar} alt="..." />
-        </a>
-      </CardAvatar>
-      <CardBody profile>
-        <h6 className={classes.cardCategory}>CEO / CO-FOUNDER</h6>
-        <h4 className={classes.cardTitle}>Alec Thompson</h4>
-        <p className={classes.description}>
-          Don{"'"}t be scared of the truth because we need to restart the
-                human foundation in truth And I love you like Kanye loves Kanye
-                I love Rick Owens’ bed design but the back is...
-              </p>
-        <Button color="primary" round>
-          Follow
-              </Button>
-      </CardBody>
-    </Card>
-  );
-}

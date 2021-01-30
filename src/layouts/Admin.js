@@ -39,8 +39,8 @@ export default function Admin({ ...rest }) {
 
   const updateRoute = () => {
     setRoutes(routes.map(r => {
-      if(r.isAuthed != undefined)
-        r.isAuthed = !r.isAuthed;
+      if(r.isAuthed != undefined && localStorage.auth)
+        r.isAuthed = false;
       return r;
     }));
   }
@@ -59,7 +59,7 @@ export default function Admin({ ...rest }) {
         }
         return null;
       })}
-      <Redirect from="/" to="/dashboard" />
+      <Redirect from="/" to="/shoplist" />
     </Switch>
   );
 
