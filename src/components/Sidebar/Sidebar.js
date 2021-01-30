@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from "react";
+import React, {useState} from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
@@ -25,7 +25,8 @@ export default function Sidebar(props) {
   function activeRoute(routeName) {
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   }
-  const { color, logo, image, logoText, routes } = props;
+
+  const { updateRoute, color, logo, image, logoText, routes } = props;
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
@@ -44,6 +45,7 @@ export default function Sidebar(props) {
         const whiteFontClasses = classNames({
           [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path)
         });
+        if(prop.isAuthed == false) return;
         return (
           <NavLink
             to={prop.layout + prop.path}
@@ -115,7 +117,7 @@ export default function Sidebar(props) {
         >
           {brand}
           <div className={classes.sidebarWrapper}>
-            {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
+            {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks updateRoute={updateRoute} />}
             {links}
           </div>
           {image !== undefined ? (

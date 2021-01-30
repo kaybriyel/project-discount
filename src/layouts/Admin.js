@@ -11,7 +11,7 @@ import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
-import routes from "routes.js";
+import ROUTES from "routes.js";
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
@@ -20,23 +20,7 @@ import logo from "assets/img/reactlogo.png";
 
 let ps;
 
-const switchRoutes = (
-  <Switch>
-    {routes.map((prop, key) => {
-      if (prop.layout === "/") {
-        return (
-         <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      }
-      return null;
-    })}
-    <Redirect from="/" to="/dashboard" />
-  </Switch>
-);
+
 
 const useStyles = makeStyles(styles);
 
@@ -46,10 +30,39 @@ export default function Admin({ ...rest }) {
   // ref to help us initialize PerfectScrollbar on windows devices
   const mainPanel = React.createRef();
   // states and functions
+  const [routes, setRoutes] = React.useState(ROUTES);
   const [image, setImage] = React.useState(bgImage);
   const [color, setColor] = React.useState("blue");
+  // const [r, setRounts] = React.useState();
   const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const updateRoute = () => {
+    setRoutes(routes.map(r => {
+      if(r.isAuthed != undefined)
+        r.isAuthed = !r.isAuthed;
+      return r;
+    }));
+  }
+
+  const switchRoutes = (
+    <Switch>
+      {routes.map((prop, key) => {
+        if (prop.layout === "/" && prop.isAuthed != false) {
+          return (
+           <Route
+              path={prop.layout + prop.path}
+              component={prop.component}
+              key={key}
+            />
+          );
+        }
+        return null;
+      })}
+      <Redirect from="/" to="/dashboard" />
+    </Switch>
+  );
+
   const handleImageClick = image => {
     setImage(image);
   };
@@ -95,6 +108,7 @@ export default function Admin({ ...rest }) {
   return (
     <div className={classes.wrapper}>
       <Sidebar
+        updateRoute = {updateRoute}
         routes={routes}
         logoText={"Project Discount"}
         logo={logo}
@@ -106,6 +120,7 @@ export default function Admin({ ...rest }) {
       />
       <div className={classes.mainPanel} ref={mainPanel}>
         <Navbar
+          updateRoute={updateRoute}
           routes={routes}
           handleDrawerToggle={handleDrawerToggle}
           {...rest}

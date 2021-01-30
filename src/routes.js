@@ -116,4 +116,8 @@ const dashboardRoutes = [
 
 ];
 
-export default dashboardRoutes.filter(r => r.isAuthed != false);
+export default dashboardRoutes;
+
+export function Authenticate(id) {
+  return authenticate(id);
+}

@@ -20,6 +20,7 @@ const useStyles = makeStyles(styles);
 
 export default function Header(props) {
   const classes = useStyles();
+  const {updateRoute} = props;
   function makeBrand() {
     var name;
     props.routes.map(prop => {
@@ -44,7 +45,7 @@ export default function Header(props) {
           </Button>
         </div>
         <Hidden smDown implementation="css">
-          <AdminNavbarLinks />
+          <AdminNavbarLinks updateRoute={updateRoute} />
         </Hidden>
         <Hidden mdUp implementation="css">
           <IconButton

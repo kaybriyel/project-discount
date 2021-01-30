@@ -19,6 +19,7 @@ var server = [
 ];
 
 const apiUrl = 'https://projectdiscount.herokuapp.com/';
+// const apiUrl = '/';
 
 module.exports = {
   // these 3 are used to create the tasks lists in TasksCard - Dashboard view
